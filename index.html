@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metodología de Artículos · Viva a Plenitud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* Layout: manual de trabajo — índice lateral fijo en escritorio, una sola columna en celular. Marca oficial Viva a Plenitud (Ley del Embellecedor). */
+:root {
+  --paper:#FBF8F1; --surface:#FFFFFF; --ink:#13203F; --muted:#5B6479; --line:#E5E0D2; --chip:#F1ECDF;
+  --heading:#011446; --navy:#2A3566; --navy-wash:rgba(42,53,102,.08);
+  --band:#011446; --band-ink:#FFFFFF; --band-muted:rgba(255,255,255,.78); --band-line:rgba(255,255,255,.24);
+  --gold:#E5A93A; --gold-soft:#EFC97A; --gold-ink:#87580A; --gold-wash:rgba(229,169,58,.13);
+  --trust:#2D8A6B; --trust-ink:#22705A; --trust-wash:rgba(45,138,107,.10);
+  --stop:#A8392D; --stop-wash:rgba(168,57,45,.08);
+  --font-display:'Merriweather', Georgia, 'Times New Roman', serif;
+  --font-body:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#081230; --surface:#0F1B42; --ink:#E9ECF5; --muted:#A4ADC5; --line:#22306A; --chip:#172659;
+    --heading:#F3E2B8; --navy:#B6C4F0; --navy-wash:rgba(182,196,240,.12);
+    --band:#122163; --band-ink:#FFFFFF; --band-muted:rgba(255,255,255,.8); --band-line:rgba(255,255,255,.26);
+    --gold:#E5A93A; --gold-soft:#EFC97A; --gold-ink:#EFC97A; --gold-wash:rgba(229,169,58,.14);
+    --trust:#55B892; --trust-ink:#6CCBA5; --trust-wash:rgba(85,184,146,.14);
+    --stop:#E8877A; --stop-wash:rgba(232,135,122,.12);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#081230; --surface:#0F1B42; --ink:#E9ECF5; --muted:#A4ADC5; --line:#22306A; --chip:#172659;
+  --heading:#F3E2B8; --navy:#B6C4F0; --navy-wash:rgba(182,196,240,.12);
+  --band:#122163; --band-ink:#FFFFFF; --band-muted:rgba(255,255,255,.8); --band-line:rgba(255,255,255,.26);
+  --gold:#E5A93A; --gold-soft:#EFC97A; --gold-ink:#EFC97A; --gold-wash:rgba(229,169,58,.14);
+  --trust:#55B892; --trust-ink:#6CCBA5; --trust-wash:rgba(85,184,146,.14);
+  --stop:#E8877A; --stop-wash:rgba(232,135,122,.12);
+  color-scheme:dark;
+}
+
+*, *::before, *::after { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1120px; margin-inline:auto; padding-inline:clamp(16px, 4vw, 32px); }
+a { color:var(--navy); text-decoration-color:var(--gold); text-underline-offset:3px; }
+a:hover { color:var(--gold-ink); }
+:focus-visible { outline:3px solid var(--gold); outline-offset:2px; border-radius:4px; }
+code, .mono { font-family:var(--font-mono); font-size:.88em; }
+code { background:var(--chip); color:var(--ink); padding:.08em .38em; border-radius:4px; overflow-wrap:anywhere; }
+p { margin:0; }
+
+/* ── Encabezado ── */
+.band { background:var(--band); color:var(--band-ink); border-bottom:4px solid var(--gold); }
+.band-inner { padding-block:clamp(36px, 6vw, 64px); display:grid; gap:1rem; }
+.eyebrow { font-size:.74rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-soft); }
+.band h1 { font-family:var(--font-display); font-weight:900; font-size:clamp(2.1rem, 5.2vw, 3.2rem); line-height:1.1; margin:0; letter-spacing:-.01em; text-wrap:balance; }
+.slogan { font-family:var(--font-display); font-weight:700; color:var(--gold); font-size:1.05rem; }
+.lead { max-width:62ch; font-size:1.08rem; color:var(--band-muted); }
+.band code { background:rgba(255,255,255,.14); color:var(--band-ink); }
+.meta { list-style:none; margin:.5rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.5rem .6rem; }
+.meta li { font-size:.84rem; border:1px solid var(--band-line); border-radius:999px; padding:.3rem .85rem; }
+.meta b { color:var(--gold-soft); font-weight:600; margin-right:.3rem; }
+
+/* ── Cuerpo ── */
+.layout { display:grid; grid-template-columns:210px minmax(0, 1fr); gap:clamp(24px, 4vw, 56px); padding-block:40px 64px; }
+.toc { position:sticky; top:calc(env(safe-area-inset-top, 0px) + 24px); align-self:start; }
+.toc-label { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:.6rem; }
+.toc ol { list-style:none; margin:0; padding:0; display:grid; gap:.1rem; }
+.toc a { display:block; padding:.34rem .65rem; border-radius:6px; color:var(--ink); text-decoration:none; font-size:.9rem; }
+.toc a:hover { background:var(--gold-wash); color:var(--heading); }
+.content { min-width:0; display:grid; }
+section { padding-block:6px 44px; margin-bottom:40px; border-bottom:1px solid var(--line); scroll-margin-top:24px; min-width:0; }
+section:last-child { border-bottom:0; margin-bottom:0; }
+.kicker { font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-ink); margin-bottom:.45rem; }
+h2 { font-family:var(--font-display); font-weight:900; color:var(--heading); font-size:clamp(1.45rem, 3vw, 1.95rem); line-height:1.22; margin:0 0 .7rem; text-wrap:balance; }
+h3 { font-family:var(--font-display); font-weight:700; color:var(--heading); font-size:1.04rem; line-height:1.35; margin:0 0 .35rem; text-wrap:balance; }
+.intro { max-width:65ch; color:var(--muted); margin-bottom:1.6rem; }
+.src { font-size:.8rem; color:var(--muted); margin-top:1.4rem; }
+.src b { color:var(--ink); font-weight:600; }
+.sub { margin:2rem 0 .9rem; }
+
+/* Principios */
+.principles { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+.principles li { display:grid; grid-template-columns:2.6rem minmax(0, 1fr); gap:1rem; padding:1rem 0; border-bottom:1px solid var(--line); }
+.principles .n { font-family:var(--font-display); font-weight:900; font-size:1.55rem; line-height:1.1; color:var(--gold-ink); font-variant-numeric:tabular-nums; }
+.principles p { color:var(--muted); margin-top:.15rem; max-width:62ch; }
+.golden { margin-top:1.4rem; padding:1rem 1.2rem; background:var(--gold-wash); border-left:4px solid var(--gold); border-radius:0 8px 8px 0; max-width:70ch; }
+.golden b { color:var(--heading); }
+
+/* Roles */
+.roles { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:1rem; }
+.role { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.2rem 1.2rem; min-width:0; }
+.role .who { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.35rem; }
+.role.jose .who { color:var(--gold-ink); }
+.role.skill .who { color:var(--navy); }
+.role.insp .who { color:var(--trust-ink); }
+.role ul { margin:.55rem 0 0; padding-left:1.1rem; color:var(--muted); font-size:.93rem; display:grid; gap:.3rem; }
+
+/* Flujo */
+.steps { list-style:none; margin:0; padding:0; counter-reset:paso; }
+.step { position:relative; display:grid; grid-template-columns:2.6rem minmax(0, 1fr); gap:1rem; padding-bottom:1.8rem; }
+.step::before { counter-increment:paso; content:counter(paso); width:2.6rem; height:2.6rem; border-radius:50%; background:var(--band); color:var(--band-ink); border:2px solid var(--gold); display:grid; place-items:center; font-family:var(--font-display); font-weight:900; font-size:1.05rem; }
+.step::after { content:""; position:absolute; left:calc(1.3rem - 1px); top:2.9rem; bottom:.35rem; width:2px; background:var(--line); }
+.step:last-child { padding-bottom:0; }
+.step:last-child::after { display:none; }
+.step-body { min-width:0; display:grid; gap:.45rem; padding-top:.35rem; }
+.step-body > p, .step-body ul { color:var(--muted); max-width:66ch; }
+.step-body ul { margin:0; padding-left:1.1rem; display:grid; gap:.25rem; }
+.step-body ul b { color:var(--ink); font-weight:600; }
+.tags { display:flex; flex-wrap:wrap; gap:.35rem; }
+.tag { font-size:.72rem; font-weight:600; padding:.14rem .6rem; border-radius:999px; }
+.tag.jose { background:var(--gold-wash); color:var(--gold-ink); }
+.tag.skill { background:var(--navy-wash); color:var(--navy); }
+.tag.insp { background:var(--trust-wash); color:var(--trust-ink); }
+.out { font-size:.86rem; color:var(--ink); }
+.out b { color:var(--gold-ink); font-weight:700; letter-spacing:.04em; text-transform:uppercase; font-size:.72rem; margin-right:.35rem; }
+
+/* Estructura */
+.anatomy-wrap { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:1.5rem; align-items:start; }
+.anatomy { display:grid; gap:6px; padding:10px; background:var(--surface); border:1px solid var(--line); border-radius:10px; font-size:.8rem; line-height:1.4; }
+.a-row { border-radius:5px; padding:.55rem .7rem; }
+.a-row small { display:block; opacity:.85; font-size:.74rem; margin-top:.1rem; }
+.a-dark { background:var(--band); color:var(--band-ink); }
+.a-dark b { color:var(--gold); }
+.a-alert { background:var(--stop-wash); color:var(--stop); border-left:3px solid var(--stop); }
+.a-cols { display:grid; grid-template-columns:2fr 1fr; gap:6px; }
+.a-main { background:var(--paper); border:1px solid var(--line); min-height:7.5rem; }
+.a-side { background:var(--chip); border:1px solid var(--line); }
+.anatomy-notes { list-style:none; margin:0; padding:0; display:grid; gap:.7rem; color:var(--muted); font-size:.93rem; }
+.anatomy-notes b { color:var(--ink); }
+.sections { list-style:none; margin:0; padding:0; columns:2 300px; column-gap:2rem; counter-reset:sec; }
+.sections li { break-inside:avoid; display:grid; grid-template-columns:2rem minmax(0, 1fr); gap:.6rem; padding:.7rem 0; border-top:1px solid var(--line); }
+.sections li::before { counter-increment:sec; content:counter(sec); font-family:var(--font-display); font-weight:900; color:var(--gold-ink); font-variant-numeric:tabular-nums; }
+.sections .t { font-weight:600; color:var(--ink); }
+.sections .d { font-size:.86rem; color:var(--muted); }
+.chip { display:inline-block; font-size:.66rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.08rem .45rem; border-radius:4px; margin-left:.35rem; vertical-align:.1em; }
+.chip.ok { background:var(--trust-wash); color:var(--trust-ink); }
+.chip.must { background:var(--gold-wash); color:var(--gold-ink); }
+.variants { margin:0; padding-left:1.1rem; color:var(--muted); display:grid; gap:.4rem; max-width:68ch; }
+.variants b { color:var(--ink); }
+
+/* Componentes */
+.callouts { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:.8rem; }
+.callout { padding:.85rem 1rem; border-radius:0 6px 6px 0; border-left:4px solid; font-size:.9rem; min-width:0; }
+.callout strong { display:block; font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.2rem; }
+.callout p { color:var(--muted); }
+.c-blue { background:var(--navy-wash); border-color:var(--navy); } .c-blue strong { color:var(--navy); }
+.c-gold { background:var(--gold-wash); border-color:var(--gold); } .c-gold strong { color:var(--gold-ink); }
+.c-trust { background:var(--trust-wash); border-color:var(--trust); } .c-trust strong { color:var(--trust-ink); }
+.c-warn { background:var(--stop-wash); border-color:var(--stop); } .c-warn strong { color:var(--stop); }
+.kit { margin:1.4rem 0 0; display:grid; grid-template-columns:minmax(9rem, max-content) minmax(0, 1fr); border-top:1px solid var(--line); }
+.kit dt, .kit dd { margin:0; padding:.7rem 0; border-bottom:1px solid var(--line); }
+.kit dt { font-weight:600; color:var(--ink); padding-right:1rem; }
+.kit dd { color:var(--muted); }
+.retired { margin-top:1.2rem; padding:.85rem 1rem; border:1px dashed var(--stop); border-radius:8px; color:var(--ink); font-size:.92rem; }
+.retired b { color:var(--stop); }
+
+/* Compliance */
+.rules { list-style:none; margin:0; padding:0; display:grid; gap:.7rem; }
+.rule { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:.4rem 1rem; align-items:start; padding:.9rem 1rem; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--stop); border-radius:0 8px 8px 0; }
+.rule p { color:var(--muted); font-size:.92rem; grid-column:1; }
+.rule h3 { grid-column:1; margin:0; }
+.cite { grid-column:2; grid-row:1 / span 2; font-size:.72rem; font-weight:700; color:var(--stop); background:var(--stop-wash); border-radius:4px; padding:.2rem .5rem; white-space:nowrap; }
+.always { list-style:none; margin:0; padding:0; display:grid; gap:.7rem; }
+.always li { padding:.9rem 1rem; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--trust); border-radius:0 8px 8px 0; color:var(--muted); font-size:.93rem; }
+.always b { color:var(--ink); }
+.quote { display:block; margin-top:.4rem; padding:.55rem .75rem; background:var(--chip); border-radius:6px; color:var(--ink); font-size:.9rem; }
+
+/* Identidad */
+.swatches { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:.8rem; }
+.swatch { background:var(--surface); border:1px solid var(--line); border-radius:10px; overflow:hidden; min-width:0; }
+.swatch .color { height:64px; border-bottom:1px solid var(--line); }
+.swatch .info { padding:.6rem .8rem .75rem; display:grid; gap:.1rem; }
+.swatch .name { font-weight:600; font-size:.9rem; }
+.swatch .hex { font-family:var(--font-mono); font-size:.8rem; color:var(--muted); font-variant-numeric:tabular-nums; }
+.swatch .use { font-size:.8rem; color:var(--muted); }
+.note { margin-top:1rem; padding:.8rem 1rem; background:var(--gold-wash); border-radius:8px; font-size:.9rem; max-width:70ch; }
+.note b { color:var(--heading); }
+.type { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:.8rem; margin-top:1.4rem; }
+.type-card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem; min-width:0; }
+.type-card .lbl { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
+.spec-display { font-family:var(--font-display); font-weight:900; font-size:1.5rem; line-height:1.2; color:var(--heading); }
+.spec-body { font-size:1rem; color:var(--ink); }
+.two-col { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1.5rem; margin-top:1.6rem; }
+.plain { margin:0; padding-left:1.1rem; color:var(--muted); display:grid; gap:.4rem; }
+.plain b { color:var(--ink); }
+
+/* Checklist */
+.check-head { display:flex; flex-wrap:wrap; align-items:center; gap:.6rem 1rem; margin-bottom:1rem; }
+.progress-text { font-weight:600; font-variant-numeric:tabular-nums; min-width:8.5rem; }
+.bar { flex:1 1 180px; height:10px; background:var(--chip); border-radius:999px; overflow:hidden; }
+.bar-fill { display:block; height:100%; width:0; background:var(--gold); border-radius:999px; transition:width .25s ease; }
+.btn { font:inherit; font-size:.85rem; font-weight:600; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:.45rem .9rem; cursor:pointer; }
+.btn:hover { border-color:var(--gold); }
+.btn.primary { background:var(--band); color:var(--band-ink); border-color:var(--band); }
+.btn.primary:hover { border-color:var(--gold); }
+.checks { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+.checks li { border-bottom:1px solid var(--line); }
+.checks label { display:grid; grid-template-columns:1.3rem minmax(0, 1fr); gap:.75rem; align-items:start; padding:.7rem .2rem; cursor:pointer; }
+.checks input { width:1.15rem; height:1.15rem; margin:.2rem 0 0; accent-color:var(--trust); }
+.checks input:checked + span { color:var(--muted); text-decoration:line-through; text-decoration-color:var(--gold); }
+
+/* Barrido */
+.sweep { display:grid; gap:1rem; }
+.sweep-group .lbl { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:.45rem; }
+.words { display:flex; flex-wrap:wrap; gap:.4rem; }
+.word { font-family:var(--font-mono); font-size:.82rem; padding:.2rem .55rem; border-radius:5px; background:var(--chip); border:1px solid var(--line); color:var(--ink); overflow-wrap:anywhere; }
+.copy-row { display:flex; flex-wrap:wrap; align-items:center; gap:.6rem 1rem; margin-top:1.2rem; }
+.copy-msg { font-size:.86rem; color:var(--trust-ink); }
+#barrido-text { width:100%; min-height:9rem; margin-top:.8rem; font-family:var(--font-mono); font-size:.82rem; background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:.7rem; }
+
+/* Pendientes y fuentes */
+.pending { list-style:none; margin:0; padding:0; display:grid; gap:.6rem; }
+.pending li { padding:.8rem 1rem; border-radius:8px; background:var(--gold-wash); color:var(--ink); font-size:.93rem; }
+.sources { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:1.5rem; }
+.sources ul { list-style:none; margin:0; padding:0; display:grid; gap:.55rem; font-size:.92rem; }
+.sources li { overflow-wrap:anywhere; }
+.sources span { display:block; font-size:.8rem; color:var(--muted); }
+
+footer { border-top:1px solid var(--line); }
+.foot { padding-block:24px 36px; font-size:.84rem; color:var(--muted); display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; justify-content:space-between; }
+
+/* ── Responsive ── */
+@media (max-width:900px) {
+  .layout { grid-template-columns:minmax(0, 1fr); padding-block:28px 48px; }
+  .toc { position:static; }
+  .toc ol { display:flex; flex-wrap:wrap; gap:.4rem; }
+  .toc a { background:var(--surface); border:1px solid var(--line); border-radius:999px; font-size:.84rem; padding:.28rem .75rem; }
+  .sources { grid-template-columns:minmax(0, 1fr); }
+}
+@media (max-width:760px) {
+  .roles, .anatomy-wrap, .callouts, .type, .two-col { grid-template-columns:minmax(0, 1fr); }
+  .swatches { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .kit { grid-template-columns:minmax(0, 1fr); }
+  .kit dt { padding-bottom:0; border-bottom:0; }
+  .kit dd { padding-top:.2rem; }
+  .rule { grid-template-columns:minmax(0, 1fr); }
+  .cite { grid-column:1; grid-row:auto; justify-self:start; white-space:normal; }
+}
+@media (prefers-reduced-motion:reduce) { .bar-fill { transition:none; } html { scroll-behavior:auto; } }
+</style>
+<style>[hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="band">
+  <div class="wrap band-inner">
+    <p class="eyebrow">Viva a Plenitud · Manual interno</p>
+    <h1>Metodología de Artículos</h1>
+    <p class="slogan">Ordena tu vida. Honra tu legado.</p>
+    <p class="lead">Así nace cada artículo de Viva a Plenitud: la skill <code>articulo-ejemplo</code> investiga, escribe y arma el HTML; El Inspector lo revisa; tú lo firmas y lo publicas. Siempre con fuentes oficiales y con las reglas de compliance de Florida.</p>
+    <ul class="meta">
+      <li><b>Ejecuta</b>skill articulo-ejemplo</li>
+      <li><b>Verifica</b>El Inspector</li>
+      <li><b>Firma</b>Jose I. Montalvo</li>
+      <li><b>Actualizado</b>29 sept 2026</li>
+    </ul>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Contenido">
+    <p class="toc-label">Contenido</p>
+    <ol>
+      <li><a href="#principios">Principios</a></li>
+      <li><a href="#roles">Quién hace qué</a></li>
+      <li><a href="#flujo">El flujo</a></li>
+      <li><a href="#estructura">Estructura</a></li>
+      <li><a href="#componentes">Componentes</a></li>
+      <li><a href="#compliance">Compliance FL</a></li>
+      <li><a href="#identidad">Identidad y voz</a></li>
+      <li><a href="#checklist">Checklist</a></li>
+      <li><a href="#barrido">Barrido</a></li>
+      <li><a href="#pendientes">Pendientes</a></li>
+      <li><a href="#fuentes">Fuentes</a></li>
+    </ol>
+  </nav>
+
+  <main class="content">
+
+    <!-- PRINCIPIOS -->
+    <section id="principios">
+      <p class="kicker">Por qué</p>
+      <h2>Los principios que mandan</h2>
+      <p class="intro">Tus cinco prioridades, en su orden, y lo que cada una significa dentro de un artículo.</p>
+      <ol class="principles">
+        <li><span class="n">1</span><div><h3>Glorificar a Dios</h3><p>Todo lo que se construye, incluido el contenido, parte de este fundamento.</p></div></li>
+        <li><span class="n">2</span><div><h3>Servir al prójimo con integridad y amor genuino</h3><p>La sección de ayuda gratuita es obligatoria: el artículo ayuda aunque el lector nunca compre.</p></div></li>
+        <li><span class="n">3</span><div><h3>Proteger la licencia de Florida</h3><p>Compliance gana siempre. Las reglas de la sección Compliance FL no se negocian.</p></div></li>
+        <li><span class="n">4</span><div><h3>Ayuda legítima antes que venta</h3><p>Primero se educa. La invitación a revisar opciones es suave y solo para quien vive en Florida.</p></div></li>
+        <li><span class="n">5</span><div><h3>Integridad absoluta en lo que se publica</h3><p>Cifras reales con fuente, sin letra chiquita y sin promesas absolutas.</p></div></li>
+      </ol>
+      <p class="golden"><b>Regla de oro: Fuente o Silencio.</b> Si un dato no se puede verificar, no se inventa: se usa un rango, se cita la fuente nacional o se dice que no se sabe.</p>
+      <p class="src"><b>Fuente:</b> tus prioridades declaradas y la skill articulo-ejemplo.</p>
+    </section>
+
+    <!-- ROLES -->
+    <section id="roles">
+      <p class="kicker">Roles</p>
+      <h2>La skill lo hace; tú decides y firmas</h2>
+      <p class="intro">Cada artículo pasa por tres manos, y ninguna se salta.</p>
+      <div class="roles">
+        <div class="role jose">
+          <p class="who">Tú · Jose</p>
+          <h3>Decides y firmas</h3>
+          <ul>
+            <li>Pides el artículo: tema, estado y año.</li>
+            <li>Si quieres nombrar una aseguradora, traes el texto que ella aprobó por escrito.</li>
+            <li>Firmas antes de publicar.</li>
+            <li>Publicas en vivaaplenitud.com.</li>
+          </ul>
+        </div>
+        <div class="role skill">
+          <p class="who">Skill articulo-ejemplo</p>
+          <h3>Investiga, escribe y arma</h3>
+          <ul>
+            <li>Parte de la plantilla de Florida.</li>
+            <li>Investiga con fuentes oficiales.</li>
+            <li>Escribe las 13 secciones.</li>
+            <li>Entrega un solo archivo HTML.</li>
+          </ul>
+        </div>
+        <div class="role insp">
+          <p class="who">El Inspector</p>
+          <h3>Verifica</h3>
+          <ul>
+            <li>Hace el barrido de compliance.</li>
+            <li>Revisa contraste, enlaces y celular.</li>
+            <li>Marca lo que espera tu firma.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLUJO -->
+    <section id="flujo">
+      <p class="kicker">Cómo</p>
+      <h2>El flujo en siete pasos</h2>
+      <p class="intro">El orden importa: nada se escribe sin variables claras y nada se publica sin tu firma.</p>
+      <ol class="steps">
+        <li class="step"><div class="step-body">
+          <h3>Pides el artículo</h3>
+          <div class="tags"><span class="tag jose">Tú</span><span class="tag skill">Skill</span></div>
+          <p>Por ejemplo: “Hazme un artículo de Viva a Plenitud para Texas”. La skill confirma tres variables: el estado, el ángulo (guía completa, cuánto cuesta un funeral, seguro sin examen médico) y el año. Si no dices el año, usa el actual.</p>
+          <p class="out"><b>Resultado</b>Variables claras antes de escribir.</p>
+        </div></li>
+        <li class="step"><div class="step-body">
+          <h3>La skill parte de la plantilla</h3>
+          <div class="tags"><span class="tag skill">Skill</span></div>
+          <p>Reúsa íntegro el CSS de la plantilla de Florida y solo cambia el contenido.</p>
+          <ul>
+            <li><b>No copia:</b> las secciones 5 y 6 viejas, el sello “Sin comisiones”, los enlaces a Choice Mutual, la frase “Nunca subirá” ni los datos viejos (teléfono de United Tissue Network y enlace antiguo de NAIC).</li>
+            <li><b>Añade siempre:</b> el bloque de contraste, los botones “Resume este artículo con” y el CSS de celular.</li>
+          </ul>
+          <p class="out"><b>Resultado</b>Base con la marca intacta y sin errores heredados.</p>
+        </div></li>
+        <li class="step"><div class="step-body">
+          <h3>Investiga con fuentes oficiales</h3>
+          <div class="tags"><span class="tag skill">Skill</span></div>
+          <ul>
+            <li>El regulador de seguros del estado y su línea de quejas.</li>
+            <li>La división funeraria o de cementerios y su teléfono.</li>
+            <li>Costos funerarios reales (NFDA y fuentes locales).</li>
+            <li>Ayudas locales: entierro por condado, 211, VA, $255 del Seguro Social y FEMA.</li>
+            <li>El buscador oficial de aseguradoras del estado (en Florida, companysearch.floir.gov).</li>
+          </ul>
+          <p>Teléfonos y cifras se verifican de nuevo; nada se copia de la plantilla sin revisar. Los montos del VA cambian cada 1 de octubre.</p>
+          <p class="out"><b>Resultado</b>Cada cifra importante con su fuente enlazada.</p>
+        </div></li>
+        <li class="step"><div class="step-body">
+          <h3>Escribe</h3>
+          <div class="tags"><span class="tag skill">Skill</span></div>
+          <p>Sigue las 13 secciones en orden. El primer bloque del artículo es la caja “Resume este artículo con:” con ChatGPT, Claude y Google AI. El artículo le habla al lector de “tú”, con tono sereno y honesto.</p>
+          <p class="out"><b>Resultado</b>Un solo archivo .html autocontenido.</p>
+        </div></li>
+        <li class="step"><div class="step-body">
+          <h3>Verifica</h3>
+          <div class="tags"><span class="tag skill">Skill</span><span class="tag insp">El Inspector</span></div>
+          <ul>
+            <li>Barrido de compliance con cero resultados.</li>
+            <li>Contraste: nada azul sobre azul.</li>
+            <li>Los tres botones de IA con su enlace.</li>
+            <li>En celular, sin desplazamiento lateral.</li>
+          </ul>
+          <p class="out"><b>Resultado</b>Lista de lo que pasó y de lo que hay que corregir.</p>
+        </div></li>
+        <li class="step"><div class="step-body">
+          <h3>Firmas</h3>
+          <div class="tags"><span class="tag jose">Tú</span></div>
+          <p>Todo lo que toca seguros, cobertura o precios, y todo lo que se publica, es zona de validación humana. Sin tu firma no sale.</p>
+          <p class="out"><b>Resultado</b>Artículo aprobado.</p>
+        </div></li>
+        <li class="step"><div class="step-body">
+          <h3>Publicas</h3>
+          <div class="tags"><span class="tag jose">Tú</span></div>
+          <p>El archivo lleva un nombre descriptivo, por ejemplo <code>articulo-viva-a-plenitud-texas.html</code>. En vivaaplenitud.com (WordPress con Rank Math), el título y la meta descripción llevan palabra clave, estado y año.</p>
+          <p class="out"><b>Resultado</b>Artículo en línea.</p>
+        </div></li>
+      </ol>
+      <p class="src"><b>Fuente:</b> skill articulo-ejemplo (pasos 1 a 5 y 7), El Inspector (pasos 5 y 6) y tu estándar de marca (sitio en WordPress con Rank Math).</p>
+    </section>
+
+    <!-- ESTRUCTURA -->
+    <section id="estructura">
+      <p class="kicker">Qué lleva</p>
+      <h2>Estructura del artículo</h2>
+      <p class="intro">Un solo archivo HTML con esta anatomía, de arriba abajo.</p>
+      <div class="anatomy-wrap">
+        <div class="anatomy" role="img" aria-label="Anatomía del artículo: encabezado, hero, banner de emergencia, artículo con sidebar y pie de página">
+          <div class="a-row a-dark">Encabezado<small>Logo Gastos<b>Finales</b>[Estado]</small></div>
+          <div class="a-row a-dark">Hero<small>Tema y estado · título H1 · fecha · lectura · “Con enlaces a fuentes oficiales”</small></div>
+          <div class="a-row a-alert">Banner de emergencia<small>Lleva a la ayuda gratuita</small></div>
+          <div class="a-cols">
+            <div class="a-row a-main">Artículo<small>Resume con IA · índice · 13 secciones</small></div>
+            <div class="a-row a-side">Sidebar<small>Reguladores · líneas de emergencia · aviso legal</small></div>
+          </div>
+          <div class="a-row a-dark">Pie de página<small>Lema y fuentes oficiales</small></div>
+        </div>
+        <ul class="anatomy-notes">
+          <li><b>En el &lt;head&gt;:</b> título y meta descripción con palabra clave, estado y año, y las fuentes Merriweather e Inter.</li>
+          <li><b>Hero:</b> el sello es “Con enlaces a fuentes oficiales”. Nunca “Sin comisiones”.</li>
+          <li><b>Banner de emergencia:</b> para quien acaba de perder a un ser querido y no tiene dinero.</li>
+          <li><b>Cuerpo:</b> dos columnas en escritorio y una sola en celular.</li>
+        </ul>
+      </div>
+
+      <h3 class="sub">Las 13 secciones, en este orden</h3>
+      <ol class="sections">
+        <li><div><p class="t">¿Qué es el seguro de vida con beneficios en vida?</p><p class="d">Definición, montos pequeños, sin examen médico, primas fijas (sin promesa absoluta) y nota regulatoria del estado.</p></div></li>
+        <li><div><p class="t">¿Cuánto cuesta un funeral en [Estado] en [Año]?</p><p class="d">Tabla de costos y el costo total real.</p></div></li>
+        <li><div><p class="t">¿Quién regula los seguros en [Estado]?</p><p class="d">Departamento de seguros, división funeraria y NAIC, con teléfonos, enlaces y el estatuto local.</p></div></li>
+        <li><div><p class="t">Qué cubre y qué NO cubre</p><p class="d">Listas de sí y no, períodos de espera y cláusula de suicidio.</p></div></li>
+        <li><div><p class="t">¿De qué depende el precio de la póliza?<span class="chip ok">Compliance</span></p><p class="d">Edad, salud, tabaco, sexo, monto y tipo de póliza. Sin cifras de primas.</p></div></li>
+        <li><div><p class="t">Cómo verificar una aseguradora<span class="chip ok">Compliance</span></p><p class="d">OIR, NAIC y AM Best explicado; cierre transparente, sin nombres ni sellos.</p></div></li>
+        <li><div><p class="t">Beneficios del gobierno</p><p class="d">Seguro Social ($255), VA y Medicaid del estado.</p></div></li>
+        <li><div><p class="t">Ayuda gratuita para familias sin recursos<span class="chip must">Obligatoria</span></p><p class="d">211, entierro por condado, donación de cuerpo, GoFundMe, iglesias y casos especiales.</p></div></li>
+        <li><div><p class="t">Recursos de apoyo al duelo</p><p class="d">Líneas de crisis y grupos gratuitos.</p></div></li>
+        <li><div><p class="t">Qué hacer después de un fallecimiento</p><p class="d">Pasos concretos, en orden.</p></div></li>
+        <li><div><p class="t">Tus derechos ante una funeraria</p><p class="d">Regla de la FTC, estatuto del estado y cómo reportar.</p></div></li>
+        <li><div><p class="t">Preguntas antes de comprar</p><p class="d">Lo que el lector debe preguntar a cualquier agente o aseguradora.</p></div></li>
+        <li><div><p class="t">Resumen: recursos clave</p><p class="d">Tabla de necesidad, entidad y contacto sobre fondo navy.</p></div></li>
+      </ol>
+
+      <h3 class="sub">Variaciones</h3>
+      <ul class="variants">
+        <li><b>Guía por estado:</b> cambian la ubicación, los reguladores, las leyes, las cifras y el buscador oficial de aseguradoras. Fuera de Florida, el cierre de la sección 6 no invita a cotizar.</li>
+        <li><b>Artículo por tema:</b> conserva las secciones 1, 4, 8, 12 y 13 y organiza el resto alrededor del ángulo.</li>
+        <li><b>Versión corta:</b> de 5 a 7 secciones, con índice, ayuda gratuita y resumen.</li>
+        <li><b>En todas:</b> los botones “Resume este artículo con” van al principio.</li>
+      </ul>
+      <p class="src"><b>Fuente:</b> skill articulo-ejemplo y su guía de estructura, con las secciones 5 y 6 de la versión corregida.</p>
+    </section>
+
+    <!-- COMPONENTES -->
+    <section id="componentes">
+      <p class="kicker">Piezas</p>
+      <h2>Componentes de la plantilla</h2>
+      <p class="intro">Todas estas piezas ya existen en el CSS de la plantilla. Se copia el patrón y se cambia el texto.</p>
+      <div class="callouts">
+        <div class="callout c-blue"><strong>Nota regulatoria</strong><p>Para notas regulatorias o institucionales.</p></div>
+        <div class="callout c-gold"><strong>Ley importante</strong><p>Para leyes, plazos y consejos clave.</p></div>
+        <div class="callout c-trust"><strong>Verifica antes de comprar</strong><p>Para verificación y confianza.</p></div>
+        <div class="callout c-warn"><strong>Atención</strong><p>Para advertencias de costo o plazos críticos.</p></div>
+      </div>
+      <dl class="kit">
+        <dt>Tablas</dt><dd>La primera fila se resalta en dorado; se ordena de más a menos relevante.</dd>
+        <dt>Tarjetas de ayuda</dt><dd>Número, título, etiqueta “Gratis” y botón de teléfono con texto blanco.</dd>
+        <dt>Pasos</dt><dd>Lista numerada con círculos dorados para procedimientos.</dd>
+        <dt>Preguntas</dt><dd>Lo que el lector debe preguntar antes de comprar.</dd>
+        <dt>Resumen</dt><dd>Tabla de tres columnas (necesidad, entidad y contacto) sobre fondo navy.</dd>
+        <dt>Sidebar</dt><dd>Reguladores oficiales, líneas de emergencia y aviso legal.</dd>
+        <dt>Botones de IA</dt><dd>ChatGPT (verde), Claude (terracota) y Google AI (azul), con texto blanco.</dd>
+      </dl>
+      <p class="retired"><b>Retirado:</b> las tarjetas de aseguradoras con sellos (“Mejor precio”, “Recomendada”, “Compara antes”) y las calificaciones mostradas como sello.</p>
+    </section>
+
+    <!-- COMPLIANCE -->
+    <section id="compliance">
+      <p class="kicker">Licencia</p>
+      <h2>Reglas de compliance de Florida</h2>
+      <p class="intro">Tus artículos cuentan como publicidad de un agente con licencia. Estas reglas mandan sobre la plantilla.</p>
+      <h3 class="sub">Prohibido en todo el artículo</h3>
+      <ul class="rules">
+        <li class="rule"><h3>Nombrar aseguradoras, productos, primas o beneficios sin texto aprobado</h3><p>Todo anuncio de un agente necesita la aprobación previa y por escrito de la aseguradora. Si hay texto aprobado, se usa tal cual.</p><span class="cite">FAC 69B-150.114(10)</span></li>
+        <li class="rule"><h3>Calificativos sobre aseguradoras</h3><p>“Mejor”, “mejor precio”, “recomendada”, “la más asequible”, “top”, “#1”, “líder”. No se puede engañar sobre la posición de una aseguradora frente a las demás.</p><span class="cite">FAC 69B-150.117(1)</span></li>
+        <li class="rule"><h3>Comparar aseguradoras o hablar mal de ellas</h3><p>Nada de “compara antes” ni “una de las más caras”.</p><span class="cite">FAC 69B-150.112</span></li>
+        <li class="rule"><h3>Calificaciones como sello</h3><p>Si se menciona AM Best u otra agencia, se explica qué mide y qué no.</p><span class="cite">FAC 69B-150.117(2)</span></li>
+        <li class="rule"><h3>Cifras de primas</h3><p>Ni tablas por aseguradora ni promedios de terceros. Mencionar una prima obliga a nombrar la aseguradora y tener su aprobación.</p><span class="cite">Guía del DFS</span></li>
+        <li class="rule"><h3>Dar a entender que el gobierno está detrás de la venta</h3><p>Nada puede hacer creer que el estado o el gobierno federal venden o respaldan el seguro.</p><span class="cite">Guía del DFS</span></li>
+        <li class="rule"><h3>Negar la comisión</h3><p>Nada de “Sin comisiones”: eres agente y cobras comisión.</p><span class="cite">Skill y Aviso legal</span></li>
+        <li class="rule"><h3>Promesas absolutas</h3><p>Nada de “la prima nunca subirá” ni “cobertura garantizada desde el día uno”.</p><span class="cite">Skill y Mega-Prompt</span></li>
+        <li class="rule"><h3>Enlaces a agencias o cotizadores de terceros</h3><p>Las fuentes son oficiales o neutrales: .gov, reguladores, NFDA, NAIC y AM Best.</p><span class="cite">Skill</span></li>
+      </ul>
+      <h3 class="sub">Siempre</h3>
+      <ul class="always">
+        <li><b>Fuera de Florida,</b> la sección 6 cierra así:<span class="quote">“Tengo licencia solo en Florida. Si vives en [Estado], busca un agente con licencia en tu estado en el sitio de [regulador del estado].”</span></li>
+        <li><b>La ficha del autor</b> lleva solo nombre y rol:<span class="quote">Jose I. Montalvo · Fundador de VivaaPlenitud.com · Agente de seguros licenciado en Florida (ramos 2-15 y 2-14)</span>Sin número de licencia ni notas de comisión.</li>
+        <li><b>El artículo cierra con un aviso legal:</b> es contenido informativo, no asesoría.</li>
+      </ul>
+    </section>
+
+    <!-- IDENTIDAD -->
+    <section id="identidad">
+      <p class="kicker">Marca</p>
+      <h2>Identidad visual y voz</h2>
+      <p class="intro">La Ley del Embellecedor manda sobre cualquier registro viejo.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="color" style="background:#E5A93A"></div><div class="info"><span class="name">Gold</span><span class="hex">#E5A93A</span><span class="use">Acentos, líneas y botones</span></div></div>
+        <div class="swatch"><div class="color" style="background:#EFC97A"></div><div class="info"><span class="name">Gold Soft</span><span class="hex">#EFC97A</span><span class="use">Acentos suaves</span></div></div>
+        <div class="swatch"><div class="color" style="background:#2A3566"></div><div class="info"><span class="name">Navy</span><span class="hex">#2A3566</span><span class="use">Encabezados y fondos oscuros</span></div></div>
+        <div class="swatch"><div class="color" style="background:#011446"></div><div class="info"><span class="name">Navy Deep</span><span class="hex">#011446</span><span class="use">Fondos oscuros principales</span></div></div>
+        <div class="swatch"><div class="color" style="background:#FBF8F1"></div><div class="info"><span class="name">Cream</span><span class="hex">#FBF8F1</span><span class="use">Fondo dominante</span></div></div>
+        <div class="swatch"><div class="color" style="background:#2D8A6B"></div><div class="info"><span class="name">Trust Green</span><span class="hex">#2D8A6B</span><span class="use">Solo validaciones y confianza</span></div></div>
+      </div>
+      <p class="note"><b>Ojo:</b> la plantilla de la skill todavía usa <code>#1B2450</code>, un navy retirado. El oficial es <code>#011446</code>.</p>
+      <div class="type">
+        <div class="type-card"><p class="lbl">Títulos · Merriweather 700/900</p><p class="spec-display">Ordena tu vida. Honra tu legado.</p></div>
+        <div class="type-card"><p class="lbl">Cuerpo · Inter 400–700</p><p class="spec-body">Protege a tu familia con información clara, fuentes oficiales y ayuda real.</p></div>
+      </div>
+      <div class="two-col">
+        <div>
+          <h3>Reglas visuales</h3>
+          <ul class="plain">
+            <li><b>Fondo navy, texto blanco.</b> Nunca azul sobre azul.</li>
+            <li>Si no refuerza confianza, transparencia y elegancia, no se usa.</li>
+            <li>Imágenes: nunca ataúdes, cementerios ni fechas.</li>
+            <li>El logo aparece una sola vez.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Voz</h3>
+          <ul class="plain">
+            <li>Serena, con autoridad, empática y honesta, como un asesor financiero de confianza.</li>
+            <li>Palabras que se enfatizan: <b>legado, protección, familia, confianza, deuda</b>.</li>
+            <li>Nunca alarmista ni de venta agresiva. La transparencia es el argumento de venta.</li>
+            <li>Los artículos hablan de “tú”; las páginas legales, de “usted”.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="src"><b>Fuente:</b> tu estándar de marca (Ley del Embellecedor) y la skill articulo-ejemplo.</p>
+    </section>
+
+    <!-- CHECKLIST -->
+    <section id="checklist">
+      <p class="kicker">Antes de publicar</p>
+      <h2>Checklist de salida</h2>
+      <p class="intro">Marca cada punto antes de firmar. Lo que marques se guarda solo en este navegador.</p>
+      <div class="check-head">
+        <p class="progress-text" id="progress-text" aria-live="polite">0 de 17 listos</p>
+        <div class="bar" aria-hidden="true"><span class="bar-fill" id="bar-fill"></span></div>
+        <button class="btn" type="button" id="reset">Reiniciar</button>
+      </div>
+      <ol class="checks">
+        <li><label><input type="checkbox" id="c01"><span>Título y meta descripción con palabra clave, estado y año.</span></label></li>
+        <li><label><input type="checkbox" id="c02"><span>Botones “Resume este artículo con” al inicio, con enlaces que funcionan.</span></label></li>
+        <li><label><input type="checkbox" id="c03"><span>Cada enlace del índice lleva a su sección.</span></label></li>
+        <li><label><input type="checkbox" id="c04"><span>Cada cifra importante tiene su fuente oficial enlazada.</span></label></li>
+        <li><label><input type="checkbox" id="c05"><span>Teléfonos, leyes y costos del estado verificados de nuevo.</span></label></li>
+        <li><label><input type="checkbox" id="c06"><span>Sección de ayuda gratuita presente y específica del estado.</span></label></li>
+        <li><label><input type="checkbox" id="c07"><span>El banner de emergencia lleva a la ayuda gratuita.</span></label></li>
+        <li><label><input type="checkbox" id="c08"><span>Secciones 5 y 6 en su versión de compliance.</span></label></li>
+        <li><label><input type="checkbox" id="c09"><span>Barrido de compliance con cero resultados.</span></label></li>
+        <li><label><input type="checkbox" id="c10"><span>Fuera de Florida: el cierre no invita a cotizar.</span></label></li>
+        <li><label><input type="checkbox" id="c11"><span>Sin promesas absolutas, tono sereno y trato de “tú”.</span></label></li>
+        <li><label><input type="checkbox" id="c12"><span>Colores y fuentes de la marca intactos.</span></label></li>
+        <li><label><input type="checkbox" id="c13"><span>Nada azul sobre azul.</span></label></li>
+        <li><label><input type="checkbox" id="c14"><span>En celular no hay desplazamiento lateral.</span></label></li>
+        <li><label><input type="checkbox" id="c15"><span>Aviso legal al final del artículo.</span></label></li>
+        <li><label><input type="checkbox" id="c16"><span>Un solo archivo .html con nombre descriptivo.</span></label></li>
+        <li><label><input type="checkbox" id="c17"><span>Firma de Jose.</span></label></li>
+      </ol>
+    </section>
+
+    <!-- BARRIDO -->
+    <section id="barrido">
+      <p class="kicker">Búsqueda</p>
+      <h2>Barrido de compliance</h2>
+      <p class="intro">Busca estas palabras en el HTML final y revisa cada resultado. Si califica, compara o nombra a una aseguradora, o muestra una prima, se corrige antes de firmar. “Mejor” también sale en frases inocentes como “es mejor planificar”: esas se quedan.</p>
+      <div class="sweep">
+        <div class="sweep-group"><p class="lbl">Calificativos y comparaciones</p><div class="words"><span class="word">mejor</span><span class="word">recomendad</span><span class="word">compara antes</span><span class="word">más barat</span><span class="word">más asequible</span><span class="word">más cara</span><span class="word">AM Best:</span></div></div>
+        <div class="sweep-group"><p class="lbl">Frases y datos retirados</p><div class="words"><span class="word">choicemutual</span><span class="word">Sin comisiones</span><span class="word">Nunca subirá</span><span class="word">957-2132</span><span class="word">index_consumer</span></div></div>
+        <div class="sweep-group"><p class="lbl">Aseguradoras de la plantilla</p><div class="words"><span class="word">Mutual of Omaha</span><span class="word">Foresters</span><span class="word">TruStage</span><span class="word">Aetna</span><span class="word">Lincoln Heritage</span><span class="word">Physicians Mutual</span><span class="word">Colonial Penn</span><span class="word">Transamerica</span><span class="word">Globe Life</span></div></div>
+        <div class="sweep-group"><p class="lbl">Primas</p><div class="words"><span class="word">/mes</span><span class="word">por mes</span></div></div>
+      </div>
+      <div class="copy-row">
+        <button class="btn primary" type="button" id="copy-barrido">Copiar la lista</button>
+        <span class="copy-msg" id="copy-msg" aria-live="polite"></span>
+      </div>
+      <label for="barrido-text" hidden>Lista del barrido</label>
+      <textarea id="barrido-text" readonly hidden>mejor
+recomendad
+compara antes
+más barat
+más asequible
+más cara
+AM Best:
+choicemutual
+Sin comisiones
+Nunca subirá
+957-2132
+index_consumer
+Mutual of Omaha
+Foresters
+TruStage
+Aetna
+Lincoln Heritage
+Physicians Mutual
+Colonial Penn
+Transamerica
+Globe Life
+/mes
+por mes</textarea>
+    </section>
+
+    <!-- PENDIENTES -->
+    <section id="pendientes">
+      <p class="kicker">Estado</p>
+      <h2>Pendientes conocidos</h2>
+      <ul class="pending">
+        <li>La plantilla de la skill usa el navy retirado <code>#1B2450</code>; el oficial es <code>#011446</code>.</li>
+        <li>La guía de estructura de la skill (<code>references/estructura.md</code>) todavía describe las secciones 5 y 6 viejas y el sello “sin comisiones”. La skill manda sobre ese archivo, pero conviene actualizarlo.</li>
+        <li>El artículo de Florida corregido conserva las cifras de abril de 2025. El VA cambia sus montos el 1 de octubre.</li>
+      </ul>
+    </section>
+
+    <!-- FUENTES -->
+    <section id="fuentes">
+      <p class="kicker">Referencias</p>
+      <h2>Fuentes</h2>
+      <div class="sources">
+        <div>
+          <h3>Reglas de Florida</h3>
+          <ul>
+            <li><a href="https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-69B-150-114" target="_blank" rel="noopener">FAC 69B-150.114</a><span>Identidad de la aseguradora y aprobación previa</span></li>
+            <li><a href="https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-69B-150-117" target="_blank" rel="noopener">FAC 69B-150.117</a><span>Afirmaciones sobre una aseguradora</span></li>
+            <li><a href="https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-69B-150-112" target="_blank" rel="noopener">FAC 69B-150.112</a><span>Comparaciones y afirmaciones despectivas</span></li>
+            <li><a href="https://myfloridacfo.com/division/agents/compliance/life-and-health-agents" target="_blank" rel="noopener">DFS: cumplimiento para agentes de vida y salud</a><span>Primas, aprobación y gobierno</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Herramientas de verificación</h3>
+          <ul>
+            <li><a href="https://companysearch.floir.gov/" target="_blank" rel="noopener">OIR: búsqueda de aseguradoras activas</a><span>companysearch.floir.gov</span></li>
+            <li><a href="https://content.naic.org/consumer.htm" target="_blank" rel="noopener">NAIC: herramientas para el consumidor</a><span>Quejas, licencias y salud financiera</span></li>
+            <li><a href="https://licenseesearch.fldfs.com/" target="_blank" rel="noopener">DFS: buscador de licencias de agentes</a><span>licenseesearch.fldfs.com</span></li>
+            <li><a href="https://www.ambest.com" target="_blank" rel="noopener">AM Best</a><span>Solidez financiera de las aseguradoras</span></li>
+            <li><a href="https://unitedtissue.org/contact/" target="_blank" rel="noopener">United Tissue Network: contacto</a><span>Línea 24/7: 1-877-738-6111</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Del ecosistema</h3>
+          <ul>
+            <li>Skill articulo-ejemplo<span>Versión corregida, 29 sept 2026</span></li>
+            <li>El Inspector<span>Verificación y compliance FL</span></li>
+            <li>Ley del Embellecedor<span>Estándar oficial de marca</span></li>
+            <li><a href="https://vivaaplenitud.com/descargo-de-responsabilidad/" target="_blank" rel="noopener">Aviso legal y divulgación de licencia</a><span>vivaaplenitud.com</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <span>Viva a Plenitud · Manual interno de artículos</span>
+    <span>Actualizado el 29 de septiembre de 2026</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var KEY = 'vap-metodologia-checklist-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.checks input[type="checkbox"]'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+  boxes.forEach(function (b) { if (saved[b.id]) b.checked = true; b.addEventListener('change', update); });
+
+  function update() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    document.getElementById('progress-text').textContent = done + ' de ' + boxes.length + ' listos';
+    document.getElementById('bar-fill').style.width = (boxes.length ? (done / boxes.length) * 100 : 0) + '%';
+    var state = {};
+    boxes.forEach(function (b) { if (b.checked) state[b.id] = 1; });
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  document.getElementById('reset').addEventListener('click', function () {
+    boxes.forEach(function (b) { b.checked = false; });
+    update();
+  });
+  update();
+
+  var btn = document.getElementById('copy-barrido');
+  var msg = document.getElementById('copy-msg');
+  var ta = document.getElementById('barrido-text');
+  btn.addEventListener('click', function () {
+    var text = ta.value;
+    function fallback() {
+      ta.hidden = false;
+      ta.focus();
+      ta.select();
+      msg.textContent = 'Selecciona y copia la lista de abajo.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { msg.textContent = 'Lista copiada.'; }, fallback);
+    } else {
+      fallback();
+    }
+  });
+})();
+</script>
+</body>
+</html>
